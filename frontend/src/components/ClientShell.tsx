@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { WalletProvider, useWalletContext } from "@/lib/hooks/WalletProvider";
 import { Navbar } from "@/components/Navbar";
+import { AnimatedBackground, type BackgroundVariant } from "@/components/backgrounds/AnimatedBackground";
+import Link from "next/link";
 
 function NavbarWrapper() {
   const wallet = useWalletContext();
@@ -25,10 +27,10 @@ function PageTransition({ children }: { children: React.ReactNode }) {
     <AnimatePresence mode="wait">
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
+        exit={{ opacity: 0, y: -4 }}
+        transition={{ duration: 0.16, ease: "easeInOut" }}
       >
         {children}
       </motion.div>
@@ -36,33 +38,66 @@ function PageTransition({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function ClientShell({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ClientShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const variant: BackgroundVariant =
+    pathname === "/eligibility"
+      ? "threads"
+      : pathname === "/dashboard"
+        ? "dotgrid"
+        : "aurora";
+
   return (
     <WalletProvider>
-      <div className="min-h-screen w-full bg-[#050816] text-slate-100 font-sans overflow-x-hidden">
+      <div className="min-h-screen w-full bg-[#080A10] text-slate-100 font-sans overflow-x-hidden">
+        <AnimatedBackground variant={variant} />
         <NavbarWrapper />
-        <main className="pt-20">
+        <main className="relative z-10 pt-16">
           <PageTransition>{children}</PageTransition>
         </main>
 
-        <footer className="w-full border-t border-white/5">
-          <div className="mx-auto max-w-5xl px-6 py-12">
-            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        {/* Footer */}
+        <footer className="relative z-10 w-full border-t border-white/[0.05] mt-20">
+          <div className="mx-auto max-w-[1160px] px-5 py-10 lg:px-14">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+              {/* Brand */}
               <div className="flex items-center gap-2.5">
-                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-indigo-600">
-                  <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600">
+                  <svg
+                    className="h-3 w-3 text-white"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 1.5L2 4v4c0 3.3 2.5 6.4 6 7 3.5-.6 6-3.7 6-7V4L8 1.5z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.5 8l1.8 1.8L11 6" />
                   </svg>
                 </div>
-                <span className="text-sm font-medium text-slate-300">MidScore</span>
+                <span className="text-[13px] font-semibold text-slate-400">MidScore</span>
               </div>
-              <p className="text-xs text-slate-500">
-                Confidential Credit Verification — Zero-Knowledge Proofs on Midnight Network
-              </p>
+
+              {/* Links + tagline */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+                <nav className="flex items-center gap-5">
+                  {[
+                    { href: "/", label: "Home" },
+                    { href: "/eligibility", label: "Verify" },
+                    { href: "/dashboard", label: "Dashboard" },
+                  ].map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className="text-[12px] text-slate-600 hover:text-slate-400 transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  ))}
+                </nav>
+                <p className="text-[11px] text-slate-700">
+                  Zero-Knowledge Proofs · Midnight Network
+                </p>
+              </div>
             </div>
           </div>
         </footer>
