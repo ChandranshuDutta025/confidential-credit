@@ -1,992 +1,734 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
-import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  ShieldCheck,
+  Shield,
   Lock,
   EyeOff,
-  Fingerprint,
   CheckCircle2,
   ArrowRight,
-  CreditCard,
+  Code2,
+  Terminal,
+  Cpu,
+  Database,
+  KeyRound,
   Zap,
+  Layers,
   FileCheck,
   Check,
   X,
+  ExternalLink,
+  ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
-/* ─── Animation helpers ─── */
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.48, ease: [0.25, 0.1, 0.25, 1] },
-  },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.09 } },
-};
-
-function SectionDivider() {
-  return (
-    <div className="mx-auto max-w-[1160px] px-5 lg:px-14">
-      <div className="h-px bg-white/[0.05]" />
-    </div>
-  );
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
-   HERO
+   1. HERO RIGHT PANEL — Interactive Cryptographic Proof Engine Widget
    ═══════════════════════════════════════════════════════════════════════════ */
+function HeroProofSimulator() {
+  const [score, setScore] = useState<number>(745);
+  const [threshold] = useState<number>(700);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [execStep, setExecStep] = useState<number>(0);
 
-function HeroSection({ reduced }: { reduced: boolean }) {
+  const isEligible = score >= threshold;
+  const mockSalt = "0x8f92a3c714e6d";
+  const mockHash = isEligible
+    ? `0x3b${(score * 12345).toString(16).slice(0, 8)}...8a1`
+    : "0x000000000000...000";
+
+  const handleRunExecution = () => {
+    if (isExecuting) return;
+    setIsExecuting(true);
+    setExecStep(1);
+
+    setTimeout(() => setExecStep(2), 600);
+    setTimeout(() => setExecStep(3), 1200);
+    setTimeout(() => {
+      setExecStep(4);
+      setIsExecuting(false);
+    }, 1800);
+  };
+
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Subtle background glow */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 55% 25%, rgba(59,111,240,0.055) 0%, transparent 55%)",
-        }}
-      />
-
-      <div className="page-shell relative z-10 w-full py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-20 items-center">
-          {/* Left: copy */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
-          >
-            {/* Status badge */}
-            <motion.div variants={fadeUp} className="mb-7 inline-flex">
-              <span className="badge badge-blue">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse-dot" />
-                Midnight Network · Zero-Knowledge Verification
-              </span>
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1
-              variants={fadeUp}
-              className="mb-6 text-[2.5rem] sm:text-[3.2rem] lg:text-[3.6rem] font-semibold leading-[1.07] tracking-tight text-white"
-            >
-              Prove you qualify.{" "}
-              <span className="gradient-text-blue">
-                Without revealing your score.
-              </span>
-            </motion.h1>
-
-            {/* Subtext */}
-            <motion.p
-              variants={fadeUp}
-              className="mb-10 max-w-[490px] text-[15px] leading-[1.75] text-slate-400"
-            >
-              Your credit score is evaluated entirely in your browser. Only a
-              cryptographic proof of eligibility is published to the Midnight
-              blockchain — your financial data never leaves your device.
-            </motion.p>
-
-            {/* CTA buttons */}
-            <motion.div
-              variants={fadeUp}
-              className="flex flex-col gap-3 sm:flex-row"
-            >
-              <Link
-                href="/eligibility"
-                className="btn btn-primary btn-lg group inline-flex items-center gap-2"
-              >
-                Check Eligibility
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <a
-                href="#how-it-works"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("how-it-works")?.scrollIntoView({
-                    behavior: reduced ? "auto" : "smooth",
-                  });
-                }}
-                className="btn btn-ghost btn-lg"
-              >
-                How it works
-              </a>
-            </motion.div>
-
-            {/* Trust signals */}
-            <motion.div
-              variants={fadeUp}
-              className="mt-12 flex flex-wrap gap-6"
-            >
-              {[
-                { label: "Score never transmitted" },
-                { label: "Local browser processing" },
-                { label: "Tamper-proof on-chain result" },
-              ].map((sig) => (
-                <div
-                  key={sig.label}
-                  className="flex items-center gap-2 text-[12px] text-slate-500"
-                >
-                  <Check className="h-3.5 w-3.5 text-emerald-500" />
-                  {sig.label}
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Right: verification status card */}
-          <motion.div
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="hidden lg:block"
-          >
-            <VerificationPreviewCard />
-          </motion.div>
+    <div className="w-full rounded-xl border border-white/[0.1] bg-[#0D1018] p-5 shadow-2xl backdrop-blur-sm">
+      {/* Panel Top Header */}
+      <div className="mb-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/60" />
+          </div>
+          <span className="ml-2 font-mono text-[11px] font-medium text-slate-400">
+            zk-prover-engine.wasm v1.0.4
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 rounded-md bg-blue-500/10 px-2 py-0.5 border border-blue-500/20 text-[10px] font-mono text-blue-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+          CLIENT PROVER READY
         </div>
       </div>
-    </section>
-  );
-}
 
-function VerificationPreviewCard() {
-  const steps = [
-    { label: "Private Input", sub: "Credit score — local only", icon: CreditCard, done: true },
-    { label: "SHA-256 Commitment", sub: "Derived locally, never sent", icon: Lock, done: true },
-    { label: "ZK Proof Generated", sub: "Validity without disclosure", icon: ShieldCheck, done: true },
-    { label: "On-Chain Result", sub: "Result on Midnight ledger", icon: CheckCircle2, done: false, active: true },
-  ];
+      {/* Interactive Controls */}
+      <div className="space-y-4">
+        {/* Score Slider */}
+        <div className="rounded-lg border border-white/[0.06] bg-[#121622] p-3.5">
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+              <Lock className="h-3.5 w-3.5 text-blue-400" />
+              Private Credit Score Input
+            </label>
+            <span className="font-mono text-xs font-bold text-white bg-blue-500/20 px-2 py-0.5 rounded border border-blue-500/30">
+              {score} FICO
+            </span>
+          </div>
+          <input
+            type="range"
+            min="300"
+            max="850"
+            value={score}
+            onChange={(e) => {
+              setScore(Number(e.target.value));
+              setExecStep(0);
+            }}
+            className="w-full accent-blue-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+          />
+          <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-1">
+            <span>300 (Poor)</span>
+            <span>Threshold: 700+</span>
+            <span>850 (Excellent)</span>
+          </div>
+        </div>
 
-  return (
-    <div className="card p-5 space-y-1">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-          Verification Status
-        </span>
-        <span className="badge badge-blue">
-          <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse-dot" />
-          Live Preview
-        </span>
-      </div>
+        {/* Live ZK Circuit Steps */}
+        <div className="space-y-2 font-mono text-[11px]">
+          <div className="flex items-center justify-between rounded border border-white/[0.04] bg-[#080A10] px-3 py-2 text-slate-400">
+            <span className="flex items-center gap-2">
+              <KeyRound className="h-3.5 w-3.5 text-slate-500" />
+              Shielded Salt:
+            </span>
+            <span className="text-slate-300 font-semibold">{mockSalt}</span>
+          </div>
 
-      {/* Steps */}
-      {steps.map((step, i) => (
+          <div className="flex items-center justify-between rounded border border-white/[0.04] bg-[#080A10] px-3 py-2 text-slate-400">
+            <span className="flex items-center gap-2">
+              <Cpu className="h-3.5 w-3.5 text-slate-500" />
+              Circuit Constraint:
+            </span>
+            <span className="text-slate-300">
+              {score} &ge; {threshold}
+            </span>
+          </div>
+        </div>
+
+        {/* Execution Progress Bar */}
+        {isExecuting && (
+          <div className="space-y-1.5 py-1">
+            <div className="flex justify-between text-[11px] font-mono text-blue-400">
+              <span>
+                {execStep === 1 && "1/3 Deriving Poseidon Hash..."}
+                {execStep === 2 && "2/3 Compiling zk-SNARK Witness..."}
+                {execStep === 3 && "3/3 Verifying Midnight State..."}
+                {execStep === 4 && "Verification Complete"}
+              </span>
+              <span>{execStep * 25}%</span>
+            </div>
+            <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-blue-500"
+                initial={{ width: "0%" }}
+                animate={{ width: `${execStep * 25}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Verifiable Result Card */}
         <div
-          key={step.label}
-          className={`flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors ${
-            step.active ? "bg-blue-500/[0.06] border border-blue-500/15" : ""
+          className={`rounded-lg border p-3.5 transition-all duration-300 ${
+            isEligible
+              ? "border-emerald-500/30 bg-emerald-500/[0.05]"
+              : "border-red-500/30 bg-red-500/[0.05]"
           }`}
         >
-          <div
-            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors ${
-              step.done
-                ? "bg-emerald-500/15 text-emerald-400"
-                : step.active
-                  ? "bg-blue-500/15 text-blue-400"
-                  : "bg-white/[0.04] text-slate-600"
-            }`}
-          >
-            {step.done ? (
-              <Check className="h-3.5 w-3.5" />
-            ) : step.active ? (
-              <span className="h-3.5 w-3.5 rounded-full border-[1.5px] border-slate-600 border-t-blue-400 animate-spin inline-block" />
-            ) : (
-              <step.icon className="h-3.5 w-3.5" />
-            )}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-2">
-              <span className={`text-[12px] font-medium truncate ${
-                step.done ? "text-slate-200" : step.active ? "text-slate-200" : "text-slate-500"
-              }`}>
-                {step.label}
-              </span>
-              {step.done && <CheckCircle2 className="h-3 w-3 text-emerald-400 shrink-0" />}
-              {step.active && (
-                <span className="text-[10px] text-blue-400 shrink-0">Processing…</span>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+              Verifiable Proof Output
+            </span>
+            <span
+              className={`inline-flex items-center gap-1 text-[11px] font-bold font-mono px-2 py-0.5 rounded ${
+                isEligible
+                  ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                  : "bg-red-500/20 text-red-400 border border-red-500/30"
+              }`}
+            >
+              {isEligible ? (
+                <>
+                  <CheckCircle2 className="h-3 w-3" /> VERIFIED ELIGIBLE
+                </>
+              ) : (
+                <>
+                  <X className="h-3 w-3" /> NOT ELIGIBLE
+                </>
               )}
+            </span>
+          </div>
+
+          <div className="space-y-1 text-[11px] font-mono text-slate-400">
+            <div className="flex justify-between">
+              <span>Public Proof Hash:</span>
+              <span className="text-slate-200">{mockHash}</span>
             </div>
-            <p className="text-[11px] text-slate-600 mt-0.5 truncate">{step.sub}</p>
+            <div className="flex justify-between">
+              <span>Private Data Exposed:</span>
+              <span className="text-emerald-400 font-semibold">0 Bytes (100% Shielded)</span>
+            </div>
           </div>
         </div>
-      ))}
 
-      {/* Footer */}
-      <div className="pt-3 border-t border-white/[0.05] mt-2">
-        <div className="flex items-center justify-between text-[11px]">
-          <span className="text-slate-600">Score disclosed:</span>
-          <span className="text-emerald-400 font-medium">Never</span>
-        </div>
-        <div className="flex items-center justify-between text-[11px] mt-1">
-          <span className="text-slate-600">Processing location:</span>
-          <span className="text-slate-400">Your browser</span>
-        </div>
+        {/* Run Execution Button */}
+        <button
+          onClick={handleRunExecution}
+          disabled={isExecuting}
+          className="w-full btn btn-primary py-2.5 text-xs font-semibold flex items-center justify-center gap-2"
+        >
+          {isExecuting ? (
+            <>
+              <span className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              Running WASM Prover...
+            </>
+          ) : (
+            <>
+              <Zap className="h-3.5 w-3.5" /> Test ZK Circuit Execution
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   HOW IT WORKS — Vertical Journey (scroll-driven)
+   2. INTERACTIVE VERIFICATION WORKFLOW (STEP-BY-STEP SANDBOX)
    ═══════════════════════════════════════════════════════════════════════════ */
-
-const STAGES = [
+const WORKFLOW_STEPS = [
   {
-    num: "01",
-    label: "Private Input",
-    detail:
-      "Your credit score is entered locally in your browser. The raw value never touches any server, network request, or external system. Processing is entirely offline.",
-    icon: CreditCard,
-    side: "right" as const,
-    from: 0,
-    to: 0.2,
-  },
-  {
-    num: "02",
-    label: "SHA-256 Commitment",
-    detail:
-      "A cryptographic commitment is derived from your score and wallet address using SHA-256. This binding proves ownership without revealing the underlying score to any party.",
+    id: 1,
+    title: "Local Score Ingestion",
+    short: "01. Private Ingestion",
     icon: Lock,
-    side: "left" as const,
-    from: 0.2,
-    to: 0.4,
+    desc: "Your raw credit rating and financial metrics are processed strictly inside client memory (browser/WASM). No data is sent to external servers or cloud indexers.",
+    input: "Raw Credit Score = 745, Salt = 0x8f92...",
+    proverAction: "In-memory evaluation & salt generation",
+    publicResult: "0 Bytes transmitted over network",
+    privacyBadge: "100% Client-Side",
   },
   {
-    num: "03",
-    label: "ZK Circuit",
-    detail:
-      "A zero-knowledge circuit evaluates your score against the eligibility threshold. The proof certifies the result is valid — without disclosing what the input value was.",
-    icon: ShieldCheck,
-    side: "right" as const,
-    from: 0.4,
-    to: 0.6,
+    id: 2,
+    title: "WASM ZK-Proof Generation",
+    short: "02. WASM Circuit Prover",
+    icon: Cpu,
+    desc: "The Compact DSL circuit evaluates the inequality constraint (Score >= 700) and compiles a zero-knowledge SNARK proof along with a Poseidon commitment hash.",
+    input: "Score >= 700 (Private Witness)",
+    proverAction: "Generate SNARK Proof & Poseidon Hash",
+    publicResult: "Proof Payload (192 bytes)",
+    privacyBadge: "Cryptographically Sealed",
   },
   {
-    num: "04",
-    label: "Wallet Signature",
-    detail:
-      "Your Midnight wallet authorizes the transaction. This ties your on-chain identity to the proof without exposing any financial data to the ledger.",
-    icon: Fingerprint,
-    side: "left" as const,
-    from: 0.6,
-    to: 0.8,
+    id: 3,
+    title: "Midnight On-Chain Verification",
+    short: "03. Midnight Ledger",
+    icon: Database,
+    desc: "The proof is submitted to Midnight's shielded smart contract. Midnight's verifier checks the mathematical proof without learning your actual score.",
+    input: "Proof Payload + Commitment Hash",
+    proverAction: "Midnight Contract Verifier Execution",
+    publicResult: "On-Chain State Update (Success: True)",
+    privacyBadge: "Zero-Knowledge Verifiable",
   },
   {
-    num: "05",
-    label: "Verified On-Chain",
-    detail:
-      "Only the boolean eligibility result is published to Midnight. Your credit score remains entirely private — permanently. The proof is tamper-proof and immutable.",
+    id: 4,
+    title: "Verifiable Attestation",
+    short: "04. Attestation Certificate",
     icon: CheckCircle2,
-    side: "right" as const,
-    from: 0.8,
-    to: 1.0,
-    isFinal: true,
+    desc: "DeFi lending protocols and Web3 financial dApps read your verified eligibility attestation directly from the Midnight ledger to approve credit terms.",
+    input: "On-Chain Verified State",
+    proverAction: "Protocol Attestation Certificate Read",
+    publicResult: "Eligible for Low-Interest Credit Tier",
+    privacyBadge: "DeFi Integrable",
   },
-] as const;
+];
 
-type NodeState = "idle" | "active" | "done";
-
-function getNodeState(stage: (typeof STAGES)[number], progress: number): NodeState {
-  if (progress >= stage.to) return "done";
-  if (progress >= stage.from) return "active";
-  return "idle";
-}
-
-function StageNode({
-  state,
-  icon: Icon,
-  isFinal,
-}: {
-  state: NodeState;
-  icon: (typeof STAGES)[number]["icon"];
-  isFinal?: boolean;
-}) {
-  const colors = {
-    idle:   { border: "rgba(255,255,255,0.09)", bg: "rgba(255,255,255,0.03)", icon: "rgba(255,255,255,0.18)" },
-    active: { border: "#3B6FF0",                bg: "rgba(59,111,240,0.1)",   icon: "#7B9FF5" },
-    done:   { border: "#12B981",                bg: "rgba(18,185,129,0.1)",   icon: "#34D399" },
-  }[state];
-
-  const glow =
-    state === "active"
-      ? "0 0 0 5px rgba(59,111,240,0.1), 0 0 18px rgba(59,111,240,0.2)"
-      : "none";
-
-  const size = state === "active" ? 38 : 30;
+function WorkflowSection() {
+  const [activeStep, setActiveStep] = useState(1);
+  const current = WORKFLOW_STEPS.find((s) => s.id === activeStep) || WORKFLOW_STEPS[0];
+  const IconComponent = current.icon;
 
   return (
-    <div className="relative flex items-center justify-center">
-      {state === "active" && (
-        <motion.div
-          className="absolute rounded-full border"
-          style={{ borderColor: "rgba(59,111,240,0.3)" }}
-          animate={{ width: [42, 56, 42], height: [42, 56, 42], opacity: [0.6, 0, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        />
-      )}
-      <div
-        className="flex items-center justify-center rounded-full transition-all duration-300"
-        style={{
-          width: size,
-          height: size,
-          background: colors.bg,
-          border: `1.5px solid ${colors.border}`,
-          boxShadow: glow,
-        }}
-      >
-        {state === "done" ? (
-          <Check className="h-3.5 w-3.5" style={{ color: colors.icon }} />
-        ) : (
-          <Icon className="h-3.5 w-3.5" style={{ color: colors.icon }} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function JourneySection({ reduced }: { reduced: boolean }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const rafRef = useRef<number>(0);
-  const targetRef = useRef(0);
-  const smoothRef = useRef(0);
-
-  useEffect(() => {
-    function measure() {
-      const el = trackRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      targetRef.current = Math.max(0, Math.min(1, -rect.top / scrollable));
-    }
-
-    function loop() {
-      if (reduced) {
-        measure();
-        setProgress(targetRef.current);
-      } else {
-        const diff = targetRef.current - smoothRef.current;
-        if (Math.abs(diff) > 0.0003) {
-          smoothRef.current += diff * 0.09;
-          setProgress(smoothRef.current);
-        }
-      }
-      rafRef.current = requestAnimationFrame(loop);
-    }
-
-    measure();
-    window.addEventListener("scroll", measure, { passive: true });
-    window.addEventListener("resize", measure, { passive: true });
-    rafRef.current = requestAnimationFrame(loop);
-    return () => {
-      window.removeEventListener("scroll", measure);
-      window.removeEventListener("resize", measure);
-      cancelAnimationFrame(rafRef.current);
-    };
-  }, [reduced]);
-
-  const nodeStates = STAGES.map((s) => getNodeState(s, progress));
-
-  return (
-    <section id="how-it-works" className="py-0">
-      {/* Intro */}
-      <div className="page-shell py-24 text-center">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-        >
-          <motion.p variants={fadeUp} className="label mb-4">
-            How it works
-          </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="mb-4 text-[2rem] font-semibold leading-[1.1] tracking-tight text-white sm:text-[2.4rem]"
-          >
-            The verification journey
-          </motion.h2>
-          <motion.p
-            variants={fadeUp}
-            className="mx-auto max-w-[420px] text-[14px] leading-relaxed text-slate-400"
-          >
-            Scroll to walk through the cryptographic verification pipeline, step by step.
-          </motion.p>
-
-          <motion.div variants={fadeUp} className="mt-8 flex justify-center">
-            <motion.div
-              className="flex flex-col items-center gap-1.5"
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className="h-7 w-px bg-gradient-to-b from-transparent to-blue-500/50" />
-              <div className="h-1 w-1 rounded-full bg-blue-500/50" />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Scroll track */}
-      <div ref={trackRef} className="relative" style={{ height: "500vh" }}>
-        <div
-          className="sticky top-0 flex items-center justify-center overflow-hidden"
-          style={{ height: "100vh" }}
-        >
-          {/* Side progress bar */}
-          <div
-            className="absolute top-[18%] bottom-[18%] right-6 w-px rounded-full overflow-hidden hidden lg:block"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <div
-              className="absolute top-0 left-0 w-full bg-blue-500/35 origin-top"
-              style={{
-                height: `${Math.round(progress * 100)}%`,
-                transition: reduced ? "none" : "height 0.05s linear",
-              }}
-            />
-          </div>
-
-          {/* Desktop layout */}
-          <div className="hidden md:block w-full max-w-[800px] mx-auto px-10">
-            {STAGES.map((stage, i) => {
-              const state = nodeStates[i];
-              const isLast = i === STAGES.length - 1;
-              const isLeft = stage.side === "left";
-              const connectorFilled = nodeStates[i] === "done";
-
-              const numColor =
-                state === "done" ? "#34D399" : state === "active" ? "#7B9FF5" : "rgba(255,255,255,0.16)";
-              const contentOpacity = state === "idle" ? 0.28 : 1;
-
-              return (
-                <div key={stage.num}>
-                  <div className="relative flex items-start">
-                    {/* Left slot */}
-                    <div
-                      className="flex-1 pr-10"
-                      style={{
-                        opacity: contentOpacity,
-                        transition: reduced ? "none" : "opacity 0.4s ease",
-                        visibility: isLeft ? "visible" : "hidden",
-                      }}
-                      aria-hidden={!isLeft}
-                    >
-                      {isLeft && (
-                        <div className="text-right py-1 max-w-[260px] ml-auto">
-                          <p
-                            className="mb-1 text-[10px] font-mono font-semibold tracking-[0.16em] uppercase"
-                            style={{ color: numColor }}
-                          >
-                            {stage.num}
-                          </p>
-                          <h3
-                            className="mb-2 text-[1.05rem] font-semibold leading-snug tracking-tight"
-                            style={{
-                              color: state === "idle" ? "rgba(255,255,255,0.28)" : "#EEF2F8",
-                            }}
-                          >
-                            {stage.label}
-                          </h3>
-                          <p
-                            className="text-[12.5px] leading-[1.7] text-slate-500"
-                            style={{
-                              opacity: state === "idle" ? 0 : 1,
-                              transition: reduced ? "none" : "opacity 0.5s ease",
-                            }}
-                          >
-                            {stage.detail}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Center path */}
-                    <div className="relative flex flex-col items-center shrink-0" style={{ width: 48 }}>
-                      <StageNode state={state} icon={stage.icon} isFinal={(stage as any).isFinal} />
-                    </div>
-
-                    {/* Right slot */}
-                    <div
-                      className="flex-1 pl-10"
-                      style={{
-                        opacity: contentOpacity,
-                        transition: reduced ? "none" : "opacity 0.4s ease",
-                        visibility: !isLeft ? "visible" : "hidden",
-                      }}
-                      aria-hidden={isLeft}
-                    >
-                      {!isLeft && (
-                        <div className="py-1 max-w-[260px]">
-                          <p
-                            className="mb-1 text-[10px] font-mono font-semibold tracking-[0.16em] uppercase"
-                            style={{ color: numColor }}
-                          >
-                            {stage.num}
-                          </p>
-                          <h3
-                            className="mb-2 text-[1.05rem] font-semibold leading-snug tracking-tight"
-                            style={{
-                              color: state === "idle" ? "rgba(255,255,255,0.28)" : "#EEF2F8",
-                            }}
-                          >
-                            {stage.label}
-                          </h3>
-                          <p
-                            className="text-[12.5px] leading-[1.7] text-slate-500"
-                            style={{
-                              opacity: state === "idle" ? 0 : 1,
-                              transition: reduced ? "none" : "opacity 0.5s ease",
-                            }}
-                          >
-                            {stage.detail}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Connector */}
-                  {!isLast && (
-                    <div className="relative flex">
-                      <div className="flex-1" />
-                      <div style={{ width: 48 }} className="flex justify-center">
-                        <div className="relative overflow-hidden" style={{ width: 1, height: 54 }}>
-                          <div className="absolute inset-0 bg-white/[0.05]" />
-                          <div
-                            className="absolute top-0 left-0 w-full origin-top"
-                            style={{
-                              height: connectorFilled ? "100%" : "0%",
-                              background: "linear-gradient(to bottom, #3B6FF0, #5B8FF8)",
-                              boxShadow: connectorFilled ? "0 0 4px rgba(59,111,240,0.4)" : "none",
-                              transition: reduced ? "none" : "height 0.4s ease",
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex-1" />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Mobile layout */}
-          <div className="md:hidden w-full px-5 max-w-sm mx-auto">
-            {STAGES.map((stage, i) => {
-              const state = nodeStates[i];
-              const isLast = i === STAGES.length - 1;
-              const numColor =
-                state === "done" ? "#34D399" : state === "active" ? "#7B9FF5" : "rgba(255,255,255,0.16)";
-              const contentOpacity = state === "idle" ? 0.28 : 1;
-              return (
-                <div key={stage.num} className="flex gap-4">
-                  <div className="flex flex-col items-center shrink-0" style={{ width: 36 }}>
-                    <StageNode state={state} icon={stage.icon} />
-                    {!isLast && (
-                      <div
-                        className="flex-1 mt-2 relative overflow-hidden"
-                        style={{ width: 1, minHeight: 72 }}
-                      >
-                        <div className="absolute inset-0 bg-white/[0.05]" />
-                        <div
-                          className="absolute top-0 left-0 w-full bg-blue-500 origin-top"
-                          style={{
-                            height: state === "done" ? "100%" : "0%",
-                            transition: reduced ? "none" : "height 0.5s ease",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className="pb-10 pt-0.5"
-                    style={{
-                      opacity: contentOpacity,
-                      transition: reduced ? "none" : "opacity 0.4s ease",
-                    }}
-                  >
-                    <p
-                      className="mb-1 text-[9px] font-mono font-semibold tracking-[0.18em] uppercase"
-                      style={{ color: numColor }}
-                    >
-                      {stage.num}
-                    </p>
-                    <h3
-                      className="mb-1.5 text-[15px] font-semibold leading-snug tracking-tight"
-                      style={{ color: state === "idle" ? "rgba(255,255,255,0.28)" : "#EEF2F8" }}
-                    >
-                      {stage.label}
-                    </h3>
-                    <p
-                      className="text-[12px] leading-[1.65] text-slate-500 max-w-[240px]"
-                      style={{
-                        opacity: state === "idle" ? 0 : 1,
-                        transition: reduced ? "none" : "opacity 0.5s ease",
-                      }}
-                    >
-                      {stage.detail}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Stage dots */}
-          <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none">
-            <div className="flex items-center gap-1.5">
-              {STAGES.map((s, i) => (
-                <div
-                  key={s.num}
-                  className="rounded-full transition-all duration-300"
-                  style={{
-                    width: nodeStates[i] === "active" ? 18 : 4,
-                    height: 4,
-                    background:
-                      nodeStates[i] === "done"
-                        ? "#12B981"
-                        : nodeStates[i] === "active"
-                          ? "#3B6FF0"
-                          : "rgba(255,255,255,0.08)",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA after journey */}
-      <div className="page-shell py-16 text-center">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          variants={fadeUp}
-        >
-          <Link
-            href="/eligibility"
-            className="btn btn-primary btn-lg group inline-flex items-center gap-2"
-          >
-            Check Your Eligibility
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   ARCHITECTURE
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-function ArchitectureSection() {
-  const pillars = [
-    {
-      n: "01",
-      title: "Private Input",
-      body:
-        "Your credit score is evaluated entirely in your browser. The raw value is never transmitted over the network or stored on any server.",
-      icon: CreditCard,
-    },
-    {
-      n: "02",
-      title: "Cryptographic Commitment",
-      body:
-        "A SHA-256 commitment is derived from your credit data and wallet address, creating a tamper-proof binding without revealing the score.",
-      icon: Lock,
-    },
-    {
-      n: "03",
-      title: "On-Chain Verification",
-      body:
-        "Only the boolean eligibility result and its proof are published to the Midnight blockchain. Your score remains entirely private.",
-      icon: CheckCircle2,
-    },
-  ];
-
-  return (
-    <section id="architecture" className="py-24">
+    <section className="py-16 border-t border-white/[0.08] bg-[#07090E]">
       <div className="page-shell">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-          className="mb-12"
-        >
-          <motion.p variants={fadeUp} className="label mb-4">
-            Architecture
-          </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="mb-4 text-[2rem] font-semibold leading-tight tracking-tight text-white sm:text-[2.3rem]"
-          >
-            Your data stays yours.
-          </motion.h2>
-          <motion.p
-            variants={fadeUp}
-            className="max-w-[460px] text-[14px] leading-relaxed text-slate-400"
-          >
-            Every layer of the verification stack is built to eliminate data exposure.
-          </motion.p>
-        </motion.div>
+        <div className="max-w-3xl mb-10">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20">
+            Cryptographic Architecture
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-3">
+            How MidScore Verifies Credit Confidentially
+          </h2>
+          <p className="text-sm text-slate-400 mt-2">
+            A 4-stage client-side proving pipeline that keeps your financial records private while giving on-chain protocols 100% cryptographic certainty.
+          </p>
+        </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          {pillars.map((p) => (
-            <motion.div
-              key={p.n}
-              variants={fadeUp}
-              className="card card-interactive p-6 group"
-            >
-              <div className="mb-5 flex items-center justify-between">
-                <span className="text-[10px] font-mono font-semibold text-blue-400/50">
-                  {p.n}
-                </span>
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.07] bg-white/[0.03] group-hover:border-blue-500/20 group-hover:bg-blue-500/[0.06] transition-colors">
-                  <p.icon className="h-3.5 w-3.5 text-blue-400" />
+        {/* Step Selector Tabs */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+          {WORKFLOW_STEPS.map((step) => {
+            const isActive = step.id === activeStep;
+            return (
+              <button
+                key={step.id}
+                onClick={() => setActiveStep(step.id)}
+                className={`flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all ${
+                  isActive
+                    ? "border-blue-500/40 bg-blue-500/10 text-white shadow-lg"
+                    : "border-white/[0.06] bg-[#0F131D] text-slate-400 hover:border-white/[0.12] hover:text-slate-200"
+                }`}
+              >
+                <step.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-blue-400" : "text-slate-500"}`} />
+                <span className="text-xs font-semibold font-mono truncate">{step.short}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Step Inspector Panel */}
+        <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-6 shadow-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+                  <IconComponent className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-mono text-blue-400 uppercase tracking-wider font-semibold">
+                    Stage {current.id} of 4
+                  </span>
+                  <h3 className="text-lg font-bold text-white">{current.title}</h3>
                 </div>
               </div>
-              <h3 className="mb-2 text-[15px] font-semibold text-white leading-tight">
-                {p.title}
-              </h3>
-              <p className="text-[13px] leading-[1.65] text-slate-500">{p.body}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+
+              <p className="text-sm text-slate-300 leading-relaxed">{current.desc}</p>
+
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-medium">
+                <Shield className="h-3.5 w-3.5" />
+                Privacy Guarantee: {current.privacyBadge}
+              </div>
+            </div>
+
+            {/* Inspector Terminal Box */}
+            <div className="lg:col-span-5 rounded-lg border border-white/[0.08] bg-[#080A10] p-4 font-mono text-xs space-y-3">
+              <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 text-slate-500">
+                <span>INSPECTOR PARAMS</span>
+                <span>STAGE 0{current.id}</span>
+              </div>
+
+              <div>
+                <span className="text-slate-500 block text-[10px] uppercase">Private Data State:</span>
+                <span className="text-slate-300 font-semibold">{current.input}</span>
+              </div>
+
+              <div>
+                <span className="text-slate-500 block text-[10px] uppercase">Operation Executed:</span>
+                <span className="text-blue-400">{current.proverAction}</span>
+              </div>
+
+              <div>
+                <span className="text-slate-500 block text-[10px] uppercase">Public Output Payload:</span>
+                <span className="text-emerald-400 font-semibold">{current.publicResult}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CAPABILITIES
+   3. PRIVACY & DISCLOSURE SPECIFICATION MATRIX
    ═══════════════════════════════════════════════════════════════════════════ */
-
-function CapabilitiesSection() {
-  const items = [
-    { icon: ShieldCheck, title: "Local Processing",  body: "Credit score computation happens entirely in your browser. Zero server round-trips for the evaluation." },
-    { icon: Zap,         title: "Fast Verification", body: "SHA-256 commitments are derived locally with no API delays. Sub-second performance." },
-    { icon: Lock,        title: "Minimal Trust",     body: "Verification occurs directly between your wallet and the blockchain. No intermediary required." },
-    { icon: EyeOff,      title: "Score Privacy",     body: "Your raw credit score is never transmitted. Only the cryptographic commitment leaves your device." },
-    { icon: FileCheck,   title: "Immutable Record",  body: "Verification results are on-chain as tamper-proof commitments that cannot be altered." },
-    { icon: Fingerprint, title: "Wallet Identity",   body: "Your Midnight wallet is your identity. No passwords, no accounts, no credential exposure." },
-  ];
-
+function PrivacyMatrixSection() {
   return (
-    <section className="py-24">
+    <section className="py-16 border-t border-white/[0.08] bg-[#090C14]">
       <div className="page-shell">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-          className="mb-12"
-        >
-          <motion.p variants={fadeUp} className="label mb-4">
-            Capabilities
-          </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="text-[2rem] font-semibold leading-tight tracking-tight text-white sm:text-[2.3rem]"
-          >
-            Built for private verification.
-          </motion.h2>
-        </motion.div>
+        <div className="max-w-3xl mb-10">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20">
+            Privacy Specification Matrix
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-3">
+            What Stays Private vs What is Verified
+          </h2>
+          <p className="text-sm text-slate-400 mt-2">
+            Complete architectural separation between sensitive user inputs and public blockchain attestations.
+          </p>
+        </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
-        >
-          {items.map((item) => (
-            <motion.div
-              key={item.title}
-              variants={fadeUp}
-              className="group flex gap-4 p-5 rounded-lg border border-white/[0.05] hover:border-white/[0.09] hover:bg-white/[0.02] transition-colors"
-            >
-              <div className="shrink-0 mt-0.5 flex h-7 w-7 items-center justify-center rounded-md bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/14 transition-colors">
-                <item.icon className="h-3.5 w-3.5" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Shielded / Private Card */}
+          <div className="rounded-xl border border-red-500/20 bg-[#0E111B] p-6 space-y-4">
+            <div className="flex items-center gap-2.5 border-b border-white/[0.08] pb-4">
+              <div className="p-2 rounded bg-red-500/10 text-red-400 border border-red-500/20">
+                <EyeOff className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="mb-1 text-[13px] font-semibold text-white">{item.title}</h3>
-                <p className="text-[12.5px] leading-[1.6] text-slate-500">{item.body}</p>
+                <h3 className="text-base font-bold text-white">100% Shielded & Private</h3>
+                <p className="text-xs text-slate-400">Never leaves your local browser memory</p>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+            </div>
+
+            <ul className="space-y-3 text-xs text-slate-300">
+              <li className="flex items-start gap-2.5">
+                <X className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Exact Credit Score</strong>
+                  <span>Your raw score (e.g., 745 FICO) is never exposed to anyone.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <X className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Bank Statements & Income</strong>
+                  <span>No account numbers, salary details, or bank transactions uploaded.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <X className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Identity & Social Security Number</strong>
+                  <span>Zero PII (Personally Identifiable Information) stored on-chain.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <X className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Debt & Payment History</strong>
+                  <span>Individual loan history and debt balances remain completely private.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* Verifiable / Public Card */}
+          <div className="rounded-xl border border-emerald-500/20 bg-[#0E111B] p-6 space-y-4">
+            <div className="flex items-center gap-2.5 border-b border-white/[0.08] pb-4">
+              <div className="p-2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <CheckCircle2 className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Verifiable Public Output</h3>
+                <p className="text-xs text-slate-400">Published to Midnight shielded ledger</p>
+              </div>
+            </div>
+
+            <ul className="space-y-3 text-xs text-slate-300">
+              <li className="flex items-start gap-2.5">
+                <Check className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Boolean Eligibility Result</strong>
+                  <span>Only returns true/false attestation (e.g. Score &ge; Threshold).</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Check className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Poseidon Commitment Hash</strong>
+                  <span>Cryptographic hash anchoring your proof without revealing raw inputs.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Check className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">Verification Timestamp & Expiration</strong>
+                  <span>Proof timestamp ensuring freshness for DeFi protocol execution.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Check className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block font-medium">On-Chain Proof Signature</strong>
+                  <span>Mathematical ZK proof signature verified by Midnight smart contract.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPARISON
+   4. VERIFIABLE CREDIT USE CASES
    ═══════════════════════════════════════════════════════════════════════════ */
+const USE_CASES = [
+  {
+    title: "Undercollateralized DeFi Loans",
+    desc: "Borrow funds at lower collateral ratios (e.g., 110% vs 150%) on Midnight money markets by proving your creditworthiness on-chain.",
+    tag: "DeFi Lending",
+  },
+  {
+    title: "Private Mortgage Qualification",
+    desc: "Prove liquidity and credit rating to real estate sellers and mortgage brokers without revealing full tax returns or bank accounts.",
+    tag: "Real Estate",
+  },
+  {
+    title: "Institutional Accreditation",
+    desc: "Verify accredited investor status for private RWA (Real World Asset) vaults anonymously with zero identity leakage.",
+    tag: "RWA & Funds",
+  },
+  {
+    title: "Cross-Chain Credit Passport",
+    desc: "Carry a portable, zero-knowledge credit score attestation across Web3 ecosystems without relying on centralized credit bureaus.",
+    tag: "Web3 Identity",
+  },
+];
 
-function ComparisonSection() {
-  const rows = [
-    { topic: "Score handling",  traditional: "Uploaded to third-party server",  midnight: "Processed locally in browser" },
-    { topic: "Data storage",    traditional: "Stored in external databases",     midnight: "Never stored externally" },
-    { topic: "Privacy model",   traditional: "Full data access to verifier",     midnight: "Only boolean result disclosed" },
-    { topic: "Breach risk",     traditional: "High — centralized data target",   midnight: "None — no raw data transmitted" },
-    { topic: "Identity",        traditional: "Account + credentials required",   midnight: "Wallet-native, no account needed" },
-  ];
-
+function UseCasesSection() {
   return (
-    <section className="py-24">
+    <section className="py-16 border-t border-white/[0.08] bg-[#07090E]">
       <div className="page-shell">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-          className="mb-12"
-        >
-          <motion.p variants={fadeUp} className="label mb-4">
-            Comparison
-          </motion.p>
-          <motion.h2
-            variants={fadeUp}
-            className="text-[2rem] font-semibold leading-tight tracking-tight text-white sm:text-[2.3rem]"
-          >
-            A fundamentally different approach.
-          </motion.h2>
-        </motion.div>
+        <div className="max-w-3xl mb-10">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20">
+            Product Use Cases
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-3">
+            Powering Next-Gen Confidential Finance
+          </h2>
+          <p className="text-sm text-slate-400 mt-2">
+            Real-world applications of zero-knowledge credit verification in Web3 & DeFi.
+          </p>
+        </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={fadeUp}
-          className="card overflow-hidden"
-        >
-          {/* Header row */}
-          <div className="grid grid-cols-[1fr_1fr_1fr] border-b border-white/[0.06]">
-            <div className="px-5 py-3.5" />
-            <div className="flex items-center gap-2 px-5 py-3.5 border-l border-white/[0.06]">
-              <div className="flex h-5 w-5 items-center justify-center rounded bg-red-500/10">
-                <X className="h-2.5 w-2.5 text-red-400" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {USE_CASES.map((uc, i) => (
+            <div
+              key={i}
+              className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-5 space-y-3 hover:border-blue-500/30 transition-all"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  {uc.tag}
+                </span>
+                <span className="text-[11px] font-mono text-slate-500">UC-0{i + 1}</span>
               </div>
-              <span className="text-[12px] font-semibold text-slate-400">Traditional</span>
+              <h3 className="text-base font-bold text-white">{uc.title}</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">{uc.desc}</p>
             </div>
-            <div className="flex items-center gap-2 px-5 py-3.5 border-l border-white/[0.06]">
-              <div className="flex h-5 w-5 items-center justify-center rounded bg-emerald-500/10">
-                <Check className="h-2.5 w-2.5 text-emerald-400" />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5. TECHNICAL TRUST & COMPACT CODE SPECIFICATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+function CompactCodeSection() {
+  return (
+    <section className="py-16 border-t border-white/[0.08] bg-[#090C14]">
+      <div className="page-shell">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-5 space-y-4">
+            <span className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded border border-purple-500/20">
+              Developer Specifications
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              Built with Compact Smart Contracts
+            </h2>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              MidScore is implemented in Midnight's domain-specific language **Compact**. Circuits run in-browser via WebAssembly, generating zk-SNARK proofs that are verified on-chain.
+            </p>
+
+            <div className="grid grid-cols-2 gap-3 pt-2 font-mono text-xs">
+              <div className="p-3 rounded-lg border border-white/[0.06] bg-[#0E111B]">
+                <span className="text-slate-500 block text-[10px] uppercase">Language</span>
+                <span className="text-white font-semibold">Compact v0.2</span>
               </div>
-              <span className="text-[12px] font-semibold text-slate-400">Midnight</span>
+              <div className="p-3 rounded-lg border border-white/[0.06] bg-[#0E111B]">
+                <span className="text-slate-500 block text-[10px] uppercase">Prover</span>
+                <span className="text-white font-semibold">Client WASM</span>
+              </div>
+              <div className="p-3 rounded-lg border border-white/[0.06] bg-[#0E111B]">
+                <span className="text-slate-500 block text-[10px] uppercase">Hash Primitive</span>
+                <span className="text-white font-semibold">Poseidon Hash</span>
+              </div>
+              <div className="p-3 rounded-lg border border-white/[0.06] bg-[#0E111B]">
+                <span className="text-slate-500 block text-[10px] uppercase">Network</span>
+                <span className="text-blue-400 font-semibold">Midnight Testnet</span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href="/docs"
+                className="inline-flex items-center gap-2 text-xs font-mono text-blue-400 hover:text-blue-300 font-semibold"
+              >
+                Read Full Compact Contract Documentation <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
 
-          {rows.map((row, i) => (
-            <div
-              key={row.topic}
-              className={`grid grid-cols-[1fr_1fr_1fr] ${i < rows.length - 1 ? "border-b border-white/[0.04]" : ""}`}
-            >
-              <div className="px-5 py-4 text-[12px] font-medium text-slate-500">{row.topic}</div>
-              <div className="flex items-start gap-2 px-5 py-4 border-l border-white/[0.04]">
-                <X className="h-3 w-3 shrink-0 mt-0.5 text-red-400/45" />
-                <span className="text-[12px] text-slate-600">{row.traditional}</span>
+          {/* Code IDE Window */}
+          <div className="lg:col-span-7 rounded-xl border border-white/[0.1] bg-[#07090F] p-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 mb-3 text-xs font-mono">
+              <div className="flex items-center gap-2 text-slate-400">
+                <Code2 className="h-4 w-4 text-blue-400" />
+                <span>CreditVerification.compact</span>
               </div>
-              <div className="flex items-start gap-2 px-5 py-4 border-l border-white/[0.04]">
-                <CheckCircle2 className="h-3 w-3 shrink-0 mt-0.5 text-emerald-500/55" />
-                <span className="text-[12px] text-slate-300">{row.midnight}</span>
-              </div>
+              <span className="text-[10px] text-slate-500">COMPACT CIRCUIT DEFINITION</span>
             </div>
-          ))}
-        </motion.div>
+
+            <pre className="font-mono text-[11px] text-slate-300 overflow-x-auto p-2 leading-relaxed">
+              <code>{`import { Vector, Bytes, Uint } from 'compact-lang';
+
+export circuit verifyCreditEligibility(
+  private userScore: Uint<16>,
+  private userSalt: Bytes<32>,
+  public thresholdScore: Uint<16>
+): Boolean {
+  // 1. Evaluate private inequality constraint
+  assert(userScore >= thresholdScore, "Credit score below required threshold");
+
+  // 2. Compute cryptographic Poseidon commitment
+  const commitment = poseidonHash(userScore, userSalt);
+
+  // 3. Return verifiable boolean attestation
+  return true;
+}`}</code>
+            </pre>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CTA
+   6. PRIMARY CALL TO ACTION BANNER
    ═══════════════════════════════════════════════════════════════════════════ */
-
-function CTASection() {
+function MainCtaSection() {
   return (
-    <section className="py-24">
+    <section className="py-14 border-t border-white/[0.08] bg-[#0D1018]">
       <div className="page-shell">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={stagger}
-          className="max-w-xl mx-auto text-center"
-        >
-          <motion.h2
-            variants={fadeUp}
-            className="mb-4 text-[2rem] font-semibold tracking-tight text-white sm:text-[2.3rem]"
-          >
-            Ready to verify privately?
-          </motion.h2>
-          <motion.p
-            variants={fadeUp}
-            className="mb-8 text-[14px] text-slate-400 leading-relaxed"
-          >
-            Check your credit eligibility without exposing your score to any third party.
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-col sm:flex-row justify-center gap-3"
-          >
+        <div className="rounded-xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-[#0F1424] to-slate-950 p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
+          <div className="space-y-2 max-w-xl">
+            <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-0.5 rounded border border-blue-500/20">
+              Midnight Privacy Protocol
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              Ready to verify your credit score privately?
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Connect your Midnight wallet, execute client-side ZK proof generation, and obtain an on-chain credit attestation in under 2 minutes.
+            </p>
+          </div>
+
+          <div className="shrink-0">
             <Link
               href="/eligibility"
-              className="btn btn-primary btn-lg group inline-flex items-center gap-2"
+              className="btn btn-primary px-6 py-3 text-xs font-semibold flex items-center gap-2"
             >
-              Start Verification
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              Start Credit Verification <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/dashboard" className="btn btn-ghost btn-lg">
-              View Dashboard
-            </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   PAGE
+   MAIN PAGE COMPONENT
    ═══════════════════════════════════════════════════════════════════════════ */
-
 export default function HomePage() {
-  const reduced = useReducedMotion();
-
   return (
-    <>
-      <HeroSection reduced={reduced} />
-      <SectionDivider />
-      <ArchitectureSection />
-      <SectionDivider />
-      <JourneySection reduced={reduced} />
-      <SectionDivider />
-      <CapabilitiesSection />
-      <SectionDivider />
-      <ComparisonSection />
-      <SectionDivider />
-      <CTASection />
-    </>
+    <div className="min-h-screen bg-[#080A10] text-[#EEF2F8]">
+      {/* Hero Section */}
+      <section className="py-10 lg:py-16">
+        <div className="page-shell">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Column: Copy & CTAs */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/25 bg-blue-500/10 text-xs font-mono font-medium text-blue-400">
+                <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
+                MIDNIGHT NETWORK &middot; ZERO-KNOWLEDGE PROOF ENGINE
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.15]">
+                Confidential Credit Verification.{" "}
+                <span className="text-blue-400">Zero Data Leakage.</span>
+              </h1>
+
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
+                Prove your creditworthiness to DeFi protocols and financial institutions without exposing your raw score, bank accounts, or financial history. Powered by client-side zk-SNARKs on Midnight Network.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                <Link
+                  href="/eligibility"
+                  className="btn btn-primary px-5 py-3 text-xs font-semibold flex items-center justify-center gap-2"
+                >
+                  Start Credit Verification <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/docs"
+                  className="btn btn-ghost px-5 py-3 text-xs font-semibold flex items-center justify-center gap-2 text-slate-300 border-white/[0.12] hover:bg-white/[0.04]"
+                >
+                  <FileCheck className="h-4 w-4 text-slate-400" />
+                  View Protocol Specs
+                </Link>
+              </div>
+
+              {/* Quick Spec Pills */}
+              <div className="pt-4 border-t border-white/[0.08] flex flex-wrap gap-4 text-[11px] font-mono text-slate-400">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> 0 Bytes Private Data Disclosed
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Zap className="h-3.5 w-3.5 text-blue-400" /> ~1.2s WASM Prover Speed
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Shield className="h-3.5 w-3.5 text-purple-400" /> Midnight Shielded State
+                </span>
+              </div>
+            </div>
+
+            {/* Right Column: Interactive Visual Proof Simulator Widget */}
+            <div className="lg:col-span-5">
+              <HeroProofSimulator />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Workflow Sandbox Section */}
+      <WorkflowSection />
+
+      {/* Privacy Matrix Section */}
+      <PrivacyMatrixSection />
+
+      {/* Use Cases Section */}
+      <UseCasesSection />
+
+      {/* Compact Code Spec Section */}
+      <CompactCodeSection />
+
+      {/* Main CTA Section */}
+      <MainCtaSection />
+    </div>
   );
 }

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Shield, ChevronRight, Lock, Sparkles, Terminal } from "lucide-react";
 import type { WalletStatus } from "@/lib/hooks/useWalletDetection";
 import type { WalletInfo } from "@/lib/types";
 
@@ -18,12 +18,12 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/eligibility", label: "Verify" },
+  { href: "/", label: "Overview" },
+  { href: "/eligibility", label: "Verify Credit" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/docs", label: "Docs" },
 ];
 
-/* ─── Wallet status indicator ─── */
 function WalletButton({
   walletStatus,
   walletInfo,
@@ -45,25 +45,23 @@ function WalletButton({
 
   if (walletStatus === "detecting" || walletStatus === "connecting") {
     return (
-      <span className="flex items-center gap-2 text-[12px] text-slate-500 font-medium">
-        <span className="h-3 w-3 rounded-full border-[1.5px] border-slate-700 border-t-blue-400 animate-spin inline-block" />
-        <span className="hidden sm:inline">
-          {walletStatus === "detecting" ? "Detecting…" : "Connecting…"}
-        </span>
+      <span className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+        <span className="h-3 w-3 rounded-full border-2 border-slate-700 border-t-blue-400 animate-spin inline-block" />
+        <span>{walletStatus === "detecting" ? "Detecting..." : "Connecting..."}</span>
       </span>
     );
   }
 
   if (walletStatus === "connected" && walletInfo) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="hidden sm:flex items-center gap-1.5 badge badge-green text-[11px]">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
+      <div className="flex items-center gap-2 font-mono text-xs">
+        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
           {shortAddr}
         </span>
         <button
           onClick={onDisconnect}
-          className="btn btn-ghost btn-sm text-[12px]"
+          className="btn btn-ghost py-1 px-2.5 text-xs text-slate-400 hover:text-white"
         >
           Disconnect
         </button>
@@ -73,18 +71,18 @@ function WalletButton({
 
   if (walletStatus === "not_found" || walletStatus === "error") {
     return (
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2 font-mono text-xs">
         <button
           onClick={onRetry}
-          className="btn btn-ghost btn-sm text-red-400 border-red-500/20 hover:border-red-500/35 hover:bg-red-500/5 text-[12px]"
+          className="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-all"
         >
           Retry
         </button>
         <button
           onClick={onDemoMode}
-          className="btn btn-ghost btn-sm text-amber-400 border-amber-500/20 hover:border-amber-500/35 hover:bg-amber-500/5 text-[12px]"
+          className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-all"
         >
-          Demo
+          Demo Wallet
         </button>
       </div>
     );
@@ -93,9 +91,9 @@ function WalletButton({
   return (
     <button
       onClick={onConnect}
-      className="btn btn-primary btn-sm text-[12px]"
+      className="btn btn-primary py-1.5 px-3.5 text-xs font-semibold flex items-center gap-1.5 font-mono"
     >
-      Connect Wallet
+      <Lock className="h-3.5 w-3.5" /> Connect Wallet
     </button>
   );
 }
@@ -111,7 +109,6 @@ export function Navbar({
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const networkLabel = process.env.NEXT_PUBLIC_NETWORK ?? "—";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -119,80 +116,55 @@ export function Navbar({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* Close mobile menu on route change */
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
-
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        scrolled ? "nav-bar" : "bg-transparent"
+    <header
+      className={`sticky top-0 z-50 transition-all duration-200 ${
+        scrolled
+          ? "bg-[#080A10]/95 backdrop-blur-md border-b border-white/[0.08] shadow-lg"
+          : "bg-[#080A10]/70 backdrop-blur-sm border-b border-white/[0.05]"
       }`}
     >
-      <div className="mx-auto flex max-w-[1160px] items-center justify-between px-5 py-3 lg:px-14">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-          {/* Shield icon */}
-          <div className="relative flex h-7 w-7 items-center justify-center rounded-lg overflow-hidden">
-            <div className="absolute inset-0 bg-blue-600/90 group-hover:bg-blue-500/90 transition-colors" />
-            <svg
-              className="relative h-3.5 w-3.5 text-white"
-              viewBox="0 0 16 16"
-              fill="none"
-              strokeWidth={1.5}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8 1.5L2 4v4c0 3.3 2.5 6.4 6 7 3.5-.6 6-3.7 6-7V4L8 1.5z"
-              />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5.5 8l1.8 1.8L11 6" />
-            </svg>
-          </div>
-          <span className="text-[13px] font-semibold tracking-tight text-slate-200 hidden sm:inline group-hover:text-white transition-colors">
-            MidScore
-          </span>
-        </Link>
+      <div className="page-shell">
+        <div className="flex h-14 items-center justify-between">
+          {/* Left: Brand Logo & Network Status Pill */}
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 group-hover:bg-blue-600/30 transition-all">
+                <Shield className="h-4 w-4 text-blue-400" />
+              </div>
+              <span className="font-bold text-sm tracking-tight text-white font-mono flex items-center gap-1">
+                MID<span className="text-blue-400">SCORE</span>
+              </span>
+            </Link>
 
-        {/* Center nav — desktop */}
-        <div className="hidden md:flex items-center gap-0.5">
-          {NAV_ITEMS.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="relative px-3.5 py-1.5 text-[13px] font-medium rounded-md transition-colors duration-150"
-              >
-                {active && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-md bg-white/[0.07]"
-                    transition={{ type: "spring", stiffness: 450, damping: 38 }}
-                  />
-                )}
-                <span
-                  className={`relative z-10 transition-colors duration-150 ${
-                    active ? "text-white" : "text-slate-400 hover:text-slate-200"
+            <span className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono text-blue-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+              MIDNIGHT TESTNET
+            </span>
+          </div>
+
+          {/* Center: Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_ITEMS.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors font-mono ${
+                    active
+                      ? "text-white bg-white/[0.08] border border-white/[0.1]"
+                      : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
                   }`}
                 >
                   {item.label}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            })}
+          </nav>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2.5">
-          {/* Network badge */}
-          <span className="hidden sm:flex items-center gap-1.5 badge badge-blue text-[11px]">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse-dot" />
-            {networkLabel}
-          </span>
-
-          {/* Wallet — desktop */}
-          <div className="hidden md:flex">
+          {/* Right: Wallet Button & Mobile Menu Toggle */}
+          <div className="flex items-center gap-3">
             <WalletButton
               walletStatus={walletStatus}
               walletInfo={walletInfo}
@@ -201,58 +173,44 @@ export function Navbar({
               onRetry={onRetry}
               onDemoMode={onDemoMode}
             />
+
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/[0.08]"
+              aria-label="Toggle Navigation"
+            >
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMenuOpen((v) => !v)}
-            className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/[0.05] transition-colors md:hidden"
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.18 }}
-            className="overflow-hidden border-t border-white/[0.05] bg-[#080A10]/95 backdrop-blur-xl md:hidden"
-          >
-            <div className="px-5 py-4 flex flex-col gap-1">
+        {/* Mobile Dropdown Menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-white/[0.08] py-3 space-y-1 font-mono text-xs"
+            >
               {NAV_ITEMS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`rounded-md px-3 py-2.5 text-[13px] font-medium transition-colors ${
+                  className={`block px-3 py-2 rounded-md transition-colors ${
                     pathname === item.href
-                      ? "bg-white/[0.07] text-white"
-                      : "text-slate-400 hover:bg-white/[0.04] hover:text-white"
+                      ? "text-white bg-white/[0.08] font-semibold"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-white/[0.05] mt-1">
-                <WalletButton
-                  walletStatus={walletStatus}
-                  walletInfo={walletInfo}
-                  onConnect={onConnect}
-                  onDisconnect={onDisconnect}
-                  onRetry={onRetry}
-                  onDemoMode={onDemoMode}
-                />
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
   );
 }
