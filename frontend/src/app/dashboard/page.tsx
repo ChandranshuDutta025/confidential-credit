@@ -109,24 +109,24 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090D12] text-[#ECECBB] py-10">
+    <div className="min-h-screen bg-[#ECECBB] text-[#14222D] py-10">
       <div className="page-shell space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#ECECBB]/10 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[rgba(20,34,45,0.08)] pb-6">
           <div>
-            <span className="text-xs font-mono uppercase tracking-wider text-[#239BA7] bg-[#239BA7]/10 px-2.5 py-1 rounded border border-[#239BA7]/30">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#196D76] bg-[#FFFFFF] px-3 py-1 rounded-full border border-[#239BA7]/30 shadow-sm">
               Midnight Analytics & Ledger Inspector
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#ECECBB] mt-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#14222D] mt-2">
               Credit Attestation Dashboard
             </h1>
-            <p className="text-xs text-[#B0BFA8] mt-1">
+            <p className="text-xs text-[#3A4D5C] mt-1">
               Real-time monitoring of zero-knowledge credit proofs and Midnight on-chain attestations.
             </p>
           </div>
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="px-3 py-1.5 rounded-lg border border-[#ECECBB]/10 bg-[#0F151D] text-[#ECECBB] flex items-center gap-2">
+            <span className="px-3.5 py-1.5 rounded-xl border border-[#7ADAA5] bg-[#FFFFFF] text-[#12633C] font-bold shadow-sm flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#7ADAA5] animate-pulse" />
               Contract State: Active
             </span>
@@ -135,55 +135,55 @@ export default function DashboardPage() {
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
-          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
-            <div className="flex items-center justify-between text-[#6E8276] text-xs">
+          <div className="rounded-2xl border border-[rgba(20,34,45,0.1)] bg-[#FFFFFF] p-5 space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-[#627685] text-xs font-semibold">
               <span>TOTAL PROOFS</span>
               <FileCheck className="h-4 w-4 text-[#239BA7]" />
             </div>
-            <div className="text-2xl font-bold text-[#ECECBB]">1,284</div>
-            <div className="text-[10px] text-[#7ADAA5] flex items-center gap-1">
+            <div className="text-2xl font-extrabold text-[#14222D]">1,284</div>
+            <div className="text-[10px] text-[#12633C] font-bold flex items-center gap-1">
               <ArrowUpRight className="h-3 w-3" /> +14.2% this week
             </div>
           </div>
 
-          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
-            <div className="flex items-center justify-between text-[#6E8276] text-xs">
+          <div className="rounded-2xl border border-[rgba(20,34,45,0.1)] bg-[#FFFFFF] p-5 space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-[#627685] text-xs font-semibold">
               <span>QUALIFICATION RATE</span>
               <CheckCircle2 className="h-4 w-4 text-[#7ADAA5]" />
             </div>
-            <div className="text-2xl font-bold text-[#ECECBB]">78.4%</div>
-            <div className="text-[10px] text-[#7ADAA5] flex items-center gap-1">
+            <div className="text-2xl font-extrabold text-[#14222D]">78.4%</div>
+            <div className="text-[10px] text-[#12633C] font-bold flex items-center gap-1">
               <ArrowUpRight className="h-3 w-3" /> Score &ge; 700 Threshold
             </div>
           </div>
 
-          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
-            <div className="flex items-center justify-between text-[#6E8276] text-xs">
+          <div className="rounded-2xl border border-[rgba(20,34,45,0.1)] bg-[#FFFFFF] p-5 space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-[#627685] text-xs font-semibold">
               <span>AVERAGE PROVING TIME</span>
               <Zap className="h-4 w-4 text-[#E1AA36]" />
             </div>
-            <div className="text-2xl font-bold text-[#ECECBB]">1.18s</div>
-            <div className="text-[10px] text-[#B0BFA8]">Browser WASM Prover</div>
+            <div className="text-2xl font-extrabold text-[#14222D]">1.18s</div>
+            <div className="text-[10px] text-[#3A4D5C] font-semibold">Browser WASM Prover</div>
           </div>
 
-          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
-            <div className="flex items-center justify-between text-[#6E8276] text-xs">
+          <div className="rounded-2xl border border-[rgba(20,34,45,0.1)] bg-[#FFFFFF] p-5 space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-[#627685] text-xs font-semibold">
               <span>LEAKED DATA</span>
               <Shield className="h-4 w-4 text-[#7ADAA5]" />
             </div>
-            <div className="text-2xl font-bold text-[#7ADAA5]">0 Bytes</div>
-            <div className="text-[10px] text-[#B0BFA8]">100% Shielded Proofs</div>
+            <div className="text-2xl font-extrabold text-[#12633C]">0 Bytes</div>
+            <div className="text-[10px] text-[#3A4D5C] font-semibold">100% Shielded Proofs</div>
           </div>
         </div>
 
         {/* Activity Chart Section */}
-        <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#ECECBB]/08 pb-3">
-            <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#ECECBB]">
+        <div className="rounded-2xl border border-[rgba(20,34,45,0.1)] bg-[#FFFFFF] p-6 space-y-4 shadow-sm">
+          <div className="flex items-center justify-between border-b border-[rgba(20,34,45,0.08)] pb-3">
+            <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#14222D]">
               <Activity className="h-4 w-4 text-[#239BA7]" />
               <span>14-DAY PROOF GENERATION ACTIVITY</span>
             </div>
-            <span className="text-[10px] font-mono text-[#E1AA36]">CLIENT-SIDE SNARK COMPILATIONS</span>
+            <span className="text-[10px] font-mono font-bold text-[#94670D]">CLIENT-SIDE SNARK COMPILATIONS</span>
           </div>
 
           <div className="h-56 w-full">
@@ -191,35 +191,36 @@ export default function DashboardPage() {
               <AreaChart data={CHART_DATA}>
                 <defs>
                   <linearGradient id="colorProofs" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#239BA7" stopOpacity={0.4} />
+                    <stop offset="5%" stopColor="#239BA7" stopOpacity={0.3} />
                     <stop offset="95%" stopColor="#239BA7" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="name" stroke="#6E8276" fontSize={10} tickLine={false} />
-                <YAxis stroke="#6E8276" fontSize={10} tickLine={false} />
+                <XAxis dataKey="name" stroke="#627685" fontSize={10} tickLine={false} />
+                <YAxis stroke="#627685" fontSize={10} tickLine={false} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#090D12",
-                    borderColor: "rgba(236,236,187,0.15)",
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "rgba(20,34,45,0.15)",
                     borderRadius: "8px",
                     fontSize: "12px",
                     fontFamily: "monospace",
-                    color: "#ECECBB",
+                    color: "#14222D",
+                    boxShadow: "0 4px 12px rgba(20,34,45,0.1)",
                   }}
                 />
-                <Area type="monotone" dataKey="proofsGenerated" stroke="#7ADAA5" strokeWidth={2} fillOpacity={1} fill="url(#colorProofs)" />
+                <Area type="monotone" dataKey="proofsGenerated" stroke="#239BA7" strokeWidth={3} fillOpacity={1} fill="url(#colorProofs)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Applications Ledger Table */}
-        <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-5 space-y-4">
+        <div className="rounded-2xl border border-[rgba(20,34,45,0.1)] bg-[#FFFFFF] p-6 space-y-4 shadow-sm">
           {/* Table Controls Header */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-[#ECECBB]/08 pb-4 font-mono text-xs">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-[rgba(20,34,45,0.08)] pb-4 font-mono text-xs">
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#6E8276]" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#627685]" />
                 <input
                   type="text"
                   placeholder="Search App ID or range..."
@@ -228,7 +229,7 @@ export default function DashboardPage() {
                     setSearchQuery(e.target.value);
                     setPage(1);
                   }}
-                  className="w-full bg-[#090D12] border border-[#ECECBB]/12 rounded-lg pl-8 pr-3 py-1.5 text-xs text-[#ECECBB] placeholder-[#6E8276] focus:outline-none focus:border-[#239BA7]"
+                  className="w-full bg-[#F8F8ED] border border-[rgba(20,34,45,0.12)] rounded-lg pl-8 pr-3 py-1.5 text-xs text-[#14222D] placeholder-[#627685] focus:outline-none focus:border-[#239BA7]"
                 />
               </div>
             </div>
@@ -242,10 +243,10 @@ export default function DashboardPage() {
                     setStatusFilter(st);
                     setPage(1);
                   }}
-                  className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-md text-[11px] font-bold transition-all ${
                     statusFilter === st
-                      ? "bg-[#239BA7] text-[#090D12] font-bold"
-                      : "text-[#B0BFA8] hover:text-[#ECECBB]"
+                      ? "bg-[#239BA7] text-[#FFFFFF] shadow-xs"
+                      : "text-[#3A4D5C] hover:text-[#14222D] hover:bg-[#F8F8ED]"
                   }`}
                 >
                   {st}
@@ -258,51 +259,51 @@ export default function DashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left font-mono text-xs">
               <thead>
-                <tr className="border-b border-[#ECECBB]/08 text-[#6E8276] text-[10px] uppercase">
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("id")}>
+                <tr className="border-b border-[rgba(20,34,45,0.08)] text-[#627685] text-[10px] uppercase font-bold">
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#14222D]" onClick={() => handleSort("id")}>
                     Application ID
                   </th>
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("range")}>
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#14222D]" onClick={() => handleSort("range")}>
                     Credit Range Tier
                   </th>
                   <th className="py-2.5 px-3">Commitment Hash</th>
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("status")}>
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#14222D]" onClick={() => handleSort("status")}>
                     Status
                   </th>
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("date")}>
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#14222D]" onClick={() => handleSort("date")}>
                     Date
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ECECBB]/04">
+              <tbody className="divide-y divide-[rgba(20,34,45,0.06)]">
                 {loading ? (
                   Array.from({ length: 5 }).map((_, i) => <TableRowSkeleton key={i} />)
                 ) : paginatedApps.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-8 text-center text-[#6E8276]">
+                    <td colSpan={5} className="py-8 text-center text-[#627685]">
                       No verification records found.
                     </td>
                   </tr>
                 ) : (
                   paginatedApps.map((app) => (
-                    <tr key={app.id} className="hover:bg-[#ECECBB]/02">
-                      <td className="py-3 px-3 font-bold text-[#ECECBB]">{app.id}</td>
-                      <td className="py-3 px-3 text-[#B0BFA8]">{app.range}</td>
-                      <td className="py-3 px-3 text-[#239BA7] font-mono text-[11px]">{app.commitment}</td>
+                    <tr key={app.id} className="hover:bg-[#F8F8ED]/60">
+                      <td className="py-3 px-3 font-bold text-[#14222D]">{app.id}</td>
+                      <td className="py-3 px-3 text-[#3A4D5C] font-semibold">{app.range}</td>
+                      <td className="py-3 px-3 text-[#196D76] font-mono text-[11px] font-bold">{app.commitment}</td>
                       <td className="py-3 px-3">
                         <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold shadow-xs ${
                             app.status === "Approved"
-                              ? "bg-[#7ADAA5] text-[#090D12]"
+                              ? "bg-[#7ADAA5] text-[#14222D]"
                               : app.status === "Pending"
-                              ? "bg-[#E1AA36] text-[#090D12]"
-                              : "bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30"
+                              ? "bg-[#E1AA36] text-[#14222D]"
+                              : "bg-[#E53935] text-[#FFFFFF]"
                           }`}
                         >
                           {app.status}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-[#6E8276]">{app.date}</td>
+                      <td className="py-3 px-3 text-[#627685]">{app.date}</td>
                     </tr>
                   ))
                 )}
@@ -311,7 +312,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Pagination Footer */}
-          <div className="flex items-center justify-between border-t border-[#ECECBB]/08 pt-3 font-mono text-xs text-[#6E8276]">
+          <div className="flex items-center justify-between border-t border-[rgba(20,34,45,0.08)] pt-3 font-mono text-xs text-[#627685]">
             <span>
               Showing {paginatedApps.length} of {filteredApps.length} records
             </span>
@@ -319,17 +320,17 @@ export default function DashboardPage() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1 rounded border border-[#ECECBB]/10 disabled:opacity-30 hover:bg-[#ECECBB]/05 text-[#ECECBB]"
+                className="p-1 rounded-md border border-[rgba(20,34,45,0.1)] disabled:opacity-30 hover:bg-[#F8F8ED] text-[#14222D]"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <span className="text-[#ECECBB]">
+              <span className="text-[#14222D] font-bold">
                 Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-1 rounded border border-[#ECECBB]/10 disabled:opacity-30 hover:bg-[#ECECBB]/05 text-[#ECECBB]"
+                className="p-1 rounded-md border border-[rgba(20,34,45,0.1)] disabled:opacity-30 hover:bg-[#F8F8ED] text-[#14222D]"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
