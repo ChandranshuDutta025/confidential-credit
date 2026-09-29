@@ -1,25 +1,17 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   CheckCircle2,
-  X,
-  BarChart3,
-  Clock,
   Search,
-  ChevronUp,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ArrowUpRight,
-  ArrowDownRight,
-  Inbox,
-  Shield,
-  Activity,
   FileCheck,
   Zap,
+  Shield,
+  Activity,
 } from "lucide-react";
-import { motion } from "framer-motion";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -117,25 +109,25 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080A10] text-[#EEF2F8] py-10">
+    <div className="min-h-screen bg-[#090D12] text-[#ECECBB] py-10">
       <div className="page-shell space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#ECECBB]/10 pb-6">
           <div>
-            <span className="text-xs font-mono uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20">
+            <span className="text-xs font-mono uppercase tracking-wider text-[#239BA7] bg-[#239BA7]/10 px-2.5 py-1 rounded border border-[#239BA7]/30">
               Midnight Analytics & Ledger Inspector
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mt-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#ECECBB] mt-2">
               Credit Attestation Dashboard
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#B0BFA8] mt-1">
               Real-time monitoring of zero-knowledge credit proofs and Midnight on-chain attestations.
             </p>
           </div>
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="px-3 py-1.5 rounded-lg border border-white/[0.08] bg-[#0D1018] text-slate-300 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="px-3 py-1.5 rounded-lg border border-[#ECECBB]/10 bg-[#0F151D] text-[#ECECBB] flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#7ADAA5] animate-pulse" />
               Contract State: Active
             </span>
           </div>
@@ -143,55 +135,55 @@ export default function DashboardPage() {
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
-          <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-4 space-y-2">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
+          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
+            <div className="flex items-center justify-between text-[#6E8276] text-xs">
               <span>TOTAL PROOFS</span>
-              <FileCheck className="h-4 w-4 text-blue-400" />
+              <FileCheck className="h-4 w-4 text-[#239BA7]" />
             </div>
-            <div className="text-2xl font-bold text-white">1,284</div>
-            <div className="text-[10px] text-emerald-400 flex items-center gap-1">
+            <div className="text-2xl font-bold text-[#ECECBB]">1,284</div>
+            <div className="text-[10px] text-[#7ADAA5] flex items-center gap-1">
               <ArrowUpRight className="h-3 w-3" /> +14.2% this week
             </div>
           </div>
 
-          <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-4 space-y-2">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
+          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
+            <div className="flex items-center justify-between text-[#6E8276] text-xs">
               <span>QUALIFICATION RATE</span>
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-[#7ADAA5]" />
             </div>
-            <div className="text-2xl font-bold text-white">78.4%</div>
-            <div className="text-[10px] text-emerald-400 flex items-center gap-1">
+            <div className="text-2xl font-bold text-[#ECECBB]">78.4%</div>
+            <div className="text-[10px] text-[#7ADAA5] flex items-center gap-1">
               <ArrowUpRight className="h-3 w-3" /> Score &ge; 700 Threshold
             </div>
           </div>
 
-          <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-4 space-y-2">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
+          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
+            <div className="flex items-center justify-between text-[#6E8276] text-xs">
               <span>AVERAGE PROVING TIME</span>
-              <Zap className="h-4 w-4 text-purple-400" />
+              <Zap className="h-4 w-4 text-[#E1AA36]" />
             </div>
-            <div className="text-2xl font-bold text-white">1.18s</div>
-            <div className="text-[10px] text-slate-400">Browser WASM Prover</div>
+            <div className="text-2xl font-bold text-[#ECECBB]">1.18s</div>
+            <div className="text-[10px] text-[#B0BFA8]">Browser WASM Prover</div>
           </div>
 
-          <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-4 space-y-2">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
+          <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-4 space-y-2">
+            <div className="flex items-center justify-between text-[#6E8276] text-xs">
               <span>LEAKED DATA</span>
-              <Shield className="h-4 w-4 text-emerald-400" />
+              <Shield className="h-4 w-4 text-[#7ADAA5]" />
             </div>
-            <div className="text-2xl font-bold text-emerald-400">0 Bytes</div>
-            <div className="text-[10px] text-slate-400">100% Shielded Proofs</div>
+            <div className="text-2xl font-bold text-[#7ADAA5]">0 Bytes</div>
+            <div className="text-[10px] text-[#B0BFA8]">100% Shielded Proofs</div>
           </div>
         </div>
 
         {/* Activity Chart Section */}
-        <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-            <div className="flex items-center gap-2 font-mono text-xs font-bold text-white">
-              <Activity className="h-4 w-4 text-blue-400" />
+        <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-[#ECECBB]/08 pb-3">
+            <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#ECECBB]">
+              <Activity className="h-4 w-4 text-[#239BA7]" />
               <span>14-DAY PROOF GENERATION ACTIVITY</span>
             </div>
-            <span className="text-[10px] font-mono text-slate-500">CLIENT-SIDE SNARK COMPILATIONS</span>
+            <span className="text-[10px] font-mono text-[#E1AA36]">CLIENT-SIDE SNARK COMPILATIONS</span>
           </div>
 
           <div className="h-56 w-full">
@@ -199,34 +191,35 @@ export default function DashboardPage() {
               <AreaChart data={CHART_DATA}>
                 <defs>
                   <linearGradient id="colorProofs" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#239BA7" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#239BA7" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="name" stroke="#475569" fontSize={10} tickLine={false} />
-                <YAxis stroke="#475569" fontSize={10} tickLine={false} />
+                <XAxis dataKey="name" stroke="#6E8276" fontSize={10} tickLine={false} />
+                <YAxis stroke="#6E8276" fontSize={10} tickLine={false} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0D1018",
-                    borderColor: "rgba(255,255,255,0.1)",
+                    backgroundColor: "#090D12",
+                    borderColor: "rgba(236,236,187,0.15)",
                     borderRadius: "8px",
                     fontSize: "12px",
                     fontFamily: "monospace",
+                    color: "#ECECBB",
                   }}
                 />
-                <Area type="monotone" dataKey="proofsGenerated" stroke="#3B82F6" strokeWidth={2} fillOpacity={1} fill="url(#colorProofs)" />
+                <Area type="monotone" dataKey="proofsGenerated" stroke="#7ADAA5" strokeWidth={2} fillOpacity={1} fill="url(#colorProofs)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Applications Ledger Table */}
-        <div className="rounded-xl border border-white/[0.08] bg-[#0D1018] p-5 space-y-4">
+        <div className="rounded-xl border border-[#ECECBB]/10 bg-[#0F151D] p-5 space-y-4">
           {/* Table Controls Header */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-white/[0.06] pb-4 font-mono text-xs">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-[#ECECBB]/08 pb-4 font-mono text-xs">
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#6E8276]" />
                 <input
                   type="text"
                   placeholder="Search App ID or range..."
@@ -235,7 +228,7 @@ export default function DashboardPage() {
                     setSearchQuery(e.target.value);
                     setPage(1);
                   }}
-                  className="w-full bg-[#080A10] border border-white/[0.08] rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500/50"
+                  className="w-full bg-[#090D12] border border-[#ECECBB]/12 rounded-lg pl-8 pr-3 py-1.5 text-xs text-[#ECECBB] placeholder-[#6E8276] focus:outline-none focus:border-[#239BA7]"
                 />
               </div>
             </div>
@@ -251,8 +244,8 @@ export default function DashboardPage() {
                   }}
                   className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-all ${
                     statusFilter === st
-                      ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-                      : "text-slate-400 hover:text-white"
+                      ? "bg-[#239BA7] text-[#090D12] font-bold"
+                      : "text-[#B0BFA8] hover:text-[#ECECBB]"
                   }`}
                 >
                   {st}
@@ -265,51 +258,51 @@ export default function DashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left font-mono text-xs">
               <thead>
-                <tr className="border-b border-white/[0.08] text-slate-500 text-[10px] uppercase">
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-white" onClick={() => handleSort("id")}>
+                <tr className="border-b border-[#ECECBB]/08 text-[#6E8276] text-[10px] uppercase">
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("id")}>
                     Application ID
                   </th>
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-white" onClick={() => handleSort("range")}>
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("range")}>
                     Credit Range Tier
                   </th>
                   <th className="py-2.5 px-3">Commitment Hash</th>
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-white" onClick={() => handleSort("status")}>
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("status")}>
                     Status
                   </th>
-                  <th className="py-2.5 px-3 cursor-pointer hover:text-white" onClick={() => handleSort("date")}>
+                  <th className="py-2.5 px-3 cursor-pointer hover:text-[#ECECBB]" onClick={() => handleSort("date")}>
                     Date
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-[#ECECBB]/04">
                 {loading ? (
                   Array.from({ length: 5 }).map((_, i) => <TableRowSkeleton key={i} />)
                 ) : paginatedApps.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-8 text-center text-slate-500">
+                    <td colSpan={5} className="py-8 text-center text-[#6E8276]">
                       No verification records found.
                     </td>
                   </tr>
                 ) : (
                   paginatedApps.map((app) => (
-                    <tr key={app.id} className="hover:bg-white/[0.02]">
-                      <td className="py-3 px-3 font-bold text-white">{app.id}</td>
-                      <td className="py-3 px-3 text-slate-300">{app.range}</td>
-                      <td className="py-3 px-3 text-slate-400 font-mono text-[11px]">{app.commitment}</td>
+                    <tr key={app.id} className="hover:bg-[#ECECBB]/02">
+                      <td className="py-3 px-3 font-bold text-[#ECECBB]">{app.id}</td>
+                      <td className="py-3 px-3 text-[#B0BFA8]">{app.range}</td>
+                      <td className="py-3 px-3 text-[#239BA7] font-mono text-[11px]">{app.commitment}</td>
                       <td className="py-3 px-3">
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${
                             app.status === "Approved"
-                              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                              ? "bg-[#7ADAA5] text-[#090D12]"
                               : app.status === "Pending"
-                              ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                              : "bg-red-500/20 text-red-400 border border-red-500/30"
+                              ? "bg-[#E1AA36] text-[#090D12]"
+                              : "bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30"
                           }`}
                         >
                           {app.status}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-slate-400">{app.date}</td>
+                      <td className="py-3 px-3 text-[#6E8276]">{app.date}</td>
                     </tr>
                   ))
                 )}
@@ -318,7 +311,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Pagination Footer */}
-          <div className="flex items-center justify-between border-t border-white/[0.06] pt-3 font-mono text-xs text-slate-500">
+          <div className="flex items-center justify-between border-t border-[#ECECBB]/08 pt-3 font-mono text-xs text-[#6E8276]">
             <span>
               Showing {paginatedApps.length} of {filteredApps.length} records
             </span>
@@ -326,17 +319,17 @@ export default function DashboardPage() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1 rounded border border-white/[0.08] disabled:opacity-30 hover:bg-white/[0.04]"
+                className="p-1 rounded border border-[#ECECBB]/10 disabled:opacity-30 hover:bg-[#ECECBB]/05 text-[#ECECBB]"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <span>
+              <span className="text-[#ECECBB]">
                 Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-1 rounded border border-white/[0.08] disabled:opacity-30 hover:bg-white/[0.04]"
+                className="p-1 rounded border border-[#ECECBB]/10 disabled:opacity-30 hover:bg-[#ECECBB]/05 text-[#ECECBB]"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>

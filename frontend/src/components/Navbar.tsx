@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Shield, ChevronRight, Lock, Sparkles, Terminal } from "lucide-react";
+import { Menu, X, Shield, Lock } from "lucide-react";
 import type { WalletStatus } from "@/lib/hooks/useWalletDetection";
 import type { WalletInfo } from "@/lib/types";
 
@@ -45,8 +45,8 @@ function WalletButton({
 
   if (walletStatus === "detecting" || walletStatus === "connecting") {
     return (
-      <span className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-        <span className="h-3 w-3 rounded-full border-2 border-slate-700 border-t-blue-400 animate-spin inline-block" />
+      <span className="flex items-center gap-2 text-xs text-[#B0BFA8] font-mono">
+        <span className="h-3 w-3 rounded-full border-2 border-[#141C27] border-t-[#239BA7] animate-spin inline-block" />
         <span>{walletStatus === "detecting" ? "Detecting..." : "Connecting..."}</span>
       </span>
     );
@@ -55,13 +55,13 @@ function WalletButton({
   if (walletStatus === "connected" && walletInfo) {
     return (
       <div className="flex items-center gap-2 font-mono text-xs">
-        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#7ADAA5]/10 border border-[#7ADAA5]/30 text-[#7ADAA5]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#7ADAA5] animate-pulse" />
           {shortAddr}
         </span>
         <button
           onClick={onDisconnect}
-          className="btn btn-ghost py-1 px-2.5 text-xs text-slate-400 hover:text-white"
+          className="btn btn-ghost py-1 px-2.5 text-xs text-[#B0BFA8] hover:text-[#ECECBB]"
         >
           Disconnect
         </button>
@@ -74,13 +74,13 @@ function WalletButton({
       <div className="flex items-center gap-2 font-mono text-xs">
         <button
           onClick={onRetry}
-          className="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-all"
+          className="px-2.5 py-1 rounded bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] hover:bg-[#EF4444]/20 transition-all"
         >
           Retry
         </button>
         <button
           onClick={onDemoMode}
-          className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-all"
+          className="px-2.5 py-1 rounded bg-[#E1AA36]/10 border border-[#E1AA36]/30 text-[#E1AA36] hover:bg-[#E1AA36]/20 transition-all"
         >
           Demo Wallet
         </button>
@@ -93,7 +93,7 @@ function WalletButton({
       onClick={onConnect}
       className="btn btn-primary py-1.5 px-3.5 text-xs font-semibold flex items-center gap-1.5 font-mono"
     >
-      <Lock className="h-3.5 w-3.5" /> Connect Wallet
+      <Lock className="h-3.5 w-3.5 text-[#090D12]" /> Connect Wallet
     </button>
   );
 }
@@ -120,8 +120,8 @@ export function Navbar({
     <header
       className={`sticky top-0 z-50 transition-all duration-200 ${
         scrolled
-          ? "bg-[#080A10]/95 backdrop-blur-md border-b border-white/[0.08] shadow-lg"
-          : "bg-[#080A10]/70 backdrop-blur-sm border-b border-white/[0.05]"
+          ? "bg-[#090D12]/95 backdrop-blur-md border-b border-[#ECECBB]/10 shadow-lg"
+          : "bg-[#090D12]/70 backdrop-blur-sm border-b border-[#ECECBB]/05"
       }`}
     >
       <div className="page-shell">
@@ -129,16 +129,16 @@ export function Navbar({
           {/* Left: Brand Logo & Network Status Pill */}
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 group-hover:bg-blue-600/30 transition-all">
-                <Shield className="h-4 w-4 text-blue-400" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#239BA7]/20 border border-[#239BA7]/40 text-[#239BA7] group-hover:bg-[#239BA7]/30 transition-all">
+                <Shield className="h-4 w-4 text-[#7ADAA5]" />
               </div>
-              <span className="font-bold text-sm tracking-tight text-white font-mono flex items-center gap-1">
-                MID<span className="text-blue-400">SCORE</span>
+              <span className="font-bold text-sm tracking-tight text-[#ECECBB] font-mono flex items-center gap-1">
+                MID<span className="text-[#239BA7]">SCORE</span>
               </span>
             </Link>
 
-            <span className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono text-blue-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+            <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#239BA7]/10 border border-[#239BA7]/30 text-[10px] font-mono text-[#7ADAA5]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#7ADAA5] animate-pulse" />
               MIDNIGHT TESTNET
             </span>
           </div>
@@ -153,8 +153,8 @@ export function Navbar({
                   href={item.href}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors font-mono ${
                     active
-                      ? "text-white bg-white/[0.08] border border-white/[0.1]"
-                      : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
+                      ? "text-[#7ADAA5] bg-[#239BA7]/15 border border-[#239BA7]/30 font-bold"
+                      : "text-[#B0BFA8] hover:text-[#ECECBB] hover:bg-[#ECECBB]/05"
                   }`}
                 >
                   {item.label}
@@ -176,7 +176,7 @@ export function Navbar({
 
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/[0.08]"
+              className="md:hidden p-1.5 rounded-md text-[#B0BFA8] hover:text-[#ECECBB] hover:bg-[#ECECBB]/10"
               aria-label="Toggle Navigation"
             >
               {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -191,7 +191,7 @@ export function Navbar({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-white/[0.08] py-3 space-y-1 font-mono text-xs"
+              className="md:hidden border-t border-[#ECECBB]/10 py-3 space-y-1 font-mono text-xs"
             >
               {NAV_ITEMS.map((item) => (
                 <Link
@@ -200,8 +200,8 @@ export function Navbar({
                   onClick={() => setMenuOpen(false)}
                   className={`block px-3 py-2 rounded-md transition-colors ${
                     pathname === item.href
-                      ? "text-white bg-white/[0.08] font-semibold"
-                      : "text-slate-400 hover:text-white"
+                      ? "text-[#7ADAA5] bg-[#239BA7]/15 font-semibold"
+                      : "text-[#B0BFA8] hover:text-[#ECECBB]"
                   }`}
                 >
                   {item.label}
